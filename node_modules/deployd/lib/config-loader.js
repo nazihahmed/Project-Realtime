@@ -3,12 +3,10 @@ var fs = require('fs')
   , _loadTypes = require('./type-loader')
   , InternalResources = require('./resources/internal-resources')
   , Files = require('./resources/files')
-  , ClientLib = require('./resources/client-lib')
-  , Dashboard = require('./resources/dashboard')
   , debug = require('debug')('config-loader')
-  , domain = require('domain')
   , async = require('async')
-  , Promise = require('bluebird');
+  , Promise = require('bluebird')
+  , shell = require('shelljs');
 
 /*!
  * Loads resources from a project folder
@@ -17,7 +15,7 @@ var fs = require('fs')
  * @param {String} basepath
  * @param {Function} callback
  */
-module.exports.loadConfig = function(basepath, server, fn) {
+module.exports.loadConfig = function (basepath, server, fn) {
   var resources = server.__resourceCache || [];
 
   if (resources.length) {
@@ -29,10 +27,10 @@ module.exports.loadConfig = function(basepath, server, fn) {
   var getTypes = async.memoize(loadTypes);
 
   async.waterfall([
-      async.apply(loadResourceDir, basepath)
+    async.apply(loadResourceDir, basepath)
     , async.apply(loadResources, getTypes, basepath, server)
-    , async.apply(addInternalResources, server, basepath)
-  ], function(err, result) {
+    , async.apply(addInternalResources, getTypes, basepath, server)
+  ], function (err, result) {
     if (server.options && server.options.env !== 'development') {
       server.__resourceCache = result;
     }
@@ -41,8 +39,8 @@ module.exports.loadConfig = function(basepath, server, fn) {
 };
 
 function loadTypes(fn) {
-  _loadTypes(function(defaults, types) {
-    Object.keys(types).forEach(function(key) {
+  _loadTypes(function (defaults, types) {
+    Object.keys(types).forEach(function (key) {
       defaults[key] = types[key];
     });
     types = defaults;
@@ -51,38 +49,36 @@ function loadTypes(fn) {
 }
 
 function loadResourceDir(basepath, fn) {
-  var dir = path.join(basepath, 'resources');
-  async.waterfall([
-    function(fn) {
-      fs.readdir(dir, fn);
-    },
-    function(results, fn) {
-      async.filter(results, function(file, fn) {
-        fs.stat(path.join(dir, file), function(err, stat) {
-          fn(stat && stat.isDirectory());
-        });
-      }, function(results) {
-        fn(null, results);
-      });
-    }
-  ], fn);
+  var resourceDir = path.join(basepath, 'resources');
+  try {
+    // get all folders that have a config.json
+    var folders = shell.ls('-R', resourceDir + path.sep + '**' + path.sep + 'config.json').map(function(file) {
+      // get just the relative part of the folder, stripping resource dir
+      return path.relative(resourceDir, path.dirname(file)).split(path.sep).join('/'); // make sure separators are slashes
+    });
+
+    fn(null, folders);
+  } catch (err) {
+    console.log(err);
+    fn(err);
+  }
 }
 
 function loadResources(getTypes, basepath, server, files, fn) {
-  async.map(files, function(resourceName, fn) {
+  async.map(files, function (resourceName, fn) {
     var resourcePath = path.join(basepath, 'resources', resourceName);
     var configPath = path.join(resourcePath, 'config.json');
     async.auto({
-      types: function(fn) {
+      types: function (fn) {
         getTypes(fn);
       },
 
-      configJsonFile: function(fn) {
+      configJsonFile: function (fn) {
         debug("reading %s", configPath);
         fs.readFile(configPath, 'utf-8', fn);
       },
 
-      configJson: ['configJsonFile', function(fn, results) {
+      configJson: ['configJsonFile', function (results, fn) {
         try {
           var settings = JSON.parse(results.configJsonFile);
           fn(null, settings);
@@ -91,7 +87,7 @@ function loadResources(getTypes, basepath, server, files, fn) {
         }
       }],
 
-      instance: ['configJson', 'types', function(fn, results) {
+      instance: ['configJson', 'types', function (results, fn) {
         debug("Loading resource: %s", resourceName);
         var config = results.configJson
           , types = results.types
@@ -101,31 +97,27 @@ function loadResources(getTypes, basepath, server, files, fn) {
           , o;
 
         o = {
-            config: config
+          config: config
           , server: server
           , db: server.db
           , configPath: resourcePath
         };
 
         if (!types[type]) return fn(new Error("Cannot find type \"" + type + "\" for resource " + resourceName));
-
-        var d = domain.create();
-        d.on('error', function (err) {
-          err.message += ' - when initializing: ' + o.config.type;
-          console.error(err.stack || err);
-          process.exit(1);
-        });
-        d.run(function() {
-          process.nextTick(function() {
-            resource = new types[type](resourceName, o);
-            loadResourceExtras(resource, fn);
-          });
+        process.nextTick(function () {
+          resource = new types[type](resourceName, o);
+          loadResourceExtras(resource, fn);
         });
       }]
-    }, function(err, results) {
+    }, function (err, results) {
       if (err && err.code === 'ENOENT') {
         err = new Error("Expected file: " + path.relative(basepath, err.path));
+      } else if (err) {
+        err.message += ' - when initializing: ' + resourceName;
+        console.error(err.stack || err);
+        process.exit(1);
       }
+
       fn(err, results && results.instance);
     });
   }, fn);
@@ -133,66 +125,60 @@ function loadResources(getTypes, basepath, server, files, fn) {
 
 function loadResourceExtras(resource, fn) {
   async.series([
-    function(fn) {
+    function (fn) {
       if (resource.load) {
         resource.load(fn);
       } else {
         fn();
       }
     }
-  ], function(err) {
+  ], function (err) {
     fn(err, resource);
   });
 }
 
-function addInternalResources(server, basepath, resources, fn) {
-  var publicFolderPromise = Promise.method(function() {
+function addInternalResources(getTypes, basepath, server, resources, fn) {
+  new Promise(function (resolve) {
     var defaultFolder = './public';
     if (server.options) {
       defaultFolder = server.options.public_dir || defaultFolder;
       var altPublic = defaultFolder + '-' + server.options.env;
-      var altPublicExistsP = Promise.defer();
-      fs.exists(altPublic, function(exists) {
-        altPublicExistsP.resolve(exists);
-      });
-      return altPublicExistsP.promise.then(function(exists) {
+
+      fs.exists(altPublic, function (exists) {
         if (exists) {
-          return altPublic;
+          resolve(altPublic);
         } else {
-          return defaultFolder;
+          resolve(defaultFolder);
         }
       });
     } else {
-      return defaultFolder;
+      resolve(defaultFolder);
     }
-  })();
-
-  publicFolderPromise.then(function(publicFolder) {
+  }).then(function (publicFolder) {
     var internals = [
       new Files('', { config: { 'public': publicFolder }, server: server }),
-      new InternalResources('__resources', {config: {configPath: basepath}, server: server})
+      new InternalResources('__resources', { config: { configPath: basepath }, server: server })
     ];
-    if( typeof server.options === 'undefined'){
-      debug('server.options is undefined. Will add (show) dpd.js and dashboard in internals array');
-      internals.push( new ClientLib('dpd.js', { config: { resources: resources }, server: server}) );
-      internals.push( new Dashboard('dashboard', {server: server}) );
-    }else{
-      if ( typeof server.options.hide_dpdjs !== 'undefined' && server.options.hide_dpdjs === true ) {
-        //hide dpd.js and dashboard
-        debug('Will not add (show) dpd.js and dashboard in internals array');
-      }else if ( typeof server.options.hide_dashboard !== 'undefined' && server.options.hide_dashboard === true ){
-        //hide dashboard
-        debug('Will not add (show) dashboard in internals array');
-        internals.push( new ClientLib('dpd.js', { config: { resources: resources }, server: server}) );
-      }else{
-        //show everything
-        debug('Will add (show) dpd.js and dashboard in internals array');
-        internals.push( new ClientLib('dpd.js', { config: { resources: resources }, server: server}) );
-        internals.push( new Dashboard('dashboard', {server: server}) );
-      }
-    }
 
-    async.forEach(internals, loadResourceExtras, function(err) {
+    return internals;
+  }).then(function (internals) {
+    return new Promise(function (resolve) {
+      getTypes(function (err, types) {
+        for (var type in types) {
+          if (types[type] && typeof types[type].selfHost === 'function') {
+            var res = types[type].selfHost({ config: { resources: resources }, server: server });
+            if (res) { 
+              internals.push(res);
+              debug('Resource ' + type + ' is self hosting at /' + res.name);
+            }
+          }
+        }
+
+        resolve(internals);
+      });
+    });
+  }).then(function (internals) {
+    async.forEach(internals, loadResourceExtras, function (err) {
       fn(err, resources.concat(internals));
     });
   });

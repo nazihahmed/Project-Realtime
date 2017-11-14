@@ -5,12 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"NODE_ENV=production node express-server"
+    "start": "NODE_ENV=production node express-server"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ayepromise": "^1.1.2",
+    "deployd": "^1.1.1",
     "dpd-fileupload": "0.0.17",
+    "dpd-js-sdk": "0.0.7",
     "express": "^4.13.4",
     "getmac": "^1.0.7",
     "mongod": "^1.3.0",
