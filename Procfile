@@ -1,1 +1,1 @@
-web: node express-server
+web: node express-server.js

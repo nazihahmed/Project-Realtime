@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "ayepromise": "^1.1.2",
-    "deployd": "^1.1.1",
+    "deployd": "0.8.8",
     "dpd-fileupload": "0.0.17",
     "dpd-js-sdk": "0.0.7",
     "express": "^4.13.4",
