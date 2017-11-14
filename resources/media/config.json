@@ -1,0 +1,6 @@
+{
+	"type": "Fileupload",
+	"directory": "upload",
+	"authorization": false,
+	"uniqueFilename": false
+}

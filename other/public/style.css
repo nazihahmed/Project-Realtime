@@ -1,0 +1,51 @@
+#comment {
+	max-width:100%;
+	max-height: 150%;
+}
+html {
+	overflow-x: hidden;
+}
+input.ng-invalid.ng-dirty,textarea.ng-invalid.ng-dirty {
+	border-color:red;
+}
+
+input.ng-valid.ng-dirty , textarea.ng-valid.ng-dirty {
+	border-color:green;
+}
+.no-data {
+	padding: 10px;
+}
+
+.main-table.ng-hide-add, .main-table.ng-hide-remove {
+	-webkit-transition: 0.3s ease-in-out all;
+	        transition: 0.3s ease-in-out all;
+}
+
+.main-table.ng-hide {
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+
+.edit-form.ng-hide-add, .edit-form.ng-hide-remove {
+	-webkit-transition: 0.3s ease-in-out all;
+	        transition: 0.3s ease-in-out all;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+
+.edit-form.ng-hide {
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+
+.edit-form,.main-table {
+	opacity: 1;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+.file-input {
+	margin: 0 auto;
+}

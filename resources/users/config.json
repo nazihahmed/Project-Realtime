@@ -1,0 +1,21 @@
+{
+	"type": "UserCollection",
+	"properties": {
+		"loggedIn": {
+			"name": "loggedIn",
+			"type": "boolean",
+			"typeLabel": "boolean",
+			"required": false,
+			"id": "loggedIn",
+			"order": 0
+		},
+		"addresses": {
+			"name": "addresses",
+			"type": "array",
+			"typeLabel": "array",
+			"required": false,
+			"id": "addresses",
+			"order": 1
+		}
+	}
+}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Area</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/style.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.4.4/jquery.jgrowl.min.css">
+</head>
+<body>
+  <nav class="navbar navbar-default">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/adminArea">School Project</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-left">
+        <li class="active"><a href="/articles">Articles</a></li>
+        <li><a href="/slider">Slider</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Options <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/adminAccount">Account Settings</a></li>
+            <li role="separator" class="divider"></li>
+            <li id="logout"><a href="#">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </nav>
+  <div class="container" ng-app="articles">
+    <div class="row">
+      <div class="jumbotron text-center col-md-8 col-md-offset-2">
+        <h1>Articles Management</h1>
+      </div>
+    </div>
+    <h2 class="text-center">Articles Table</h2>
+    <div class="row" ng-controller="mainCRTL" ng-cloak>
+      <p class="text-center text-info bg-info no-data" ng-if="articles.length < 1">There is no data to display ! <a href="/adminArea">Click here</a> to add a new article</p>
+      <div class="table-responsive main-table" ng-hide="editMode || articles.length < 1" ng-cloak>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>title</th>
+              <th>time</th>
+              <th>details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="article in articles">
+              <td>{{article.id}}</td>
+              <td>{{article.title}}</td>
+              <td>{{article.time | date:'d/M/yyyy'}}</td>
+              <td>{{article.details}}</td>
+              <td>
+                <button class="btn btn-primary" ng-click="enterEditMode(article,$index)">Edit</button>
+              </td>
+              <td>
+                <button class="btn" ng-click="removeArticle($index)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div ng-show="editMode" ng-cloak class="edit-form">
+        <form class="col-xs-12" name="editForm" novalidate>
+          <div class="form-element form-group">
+              <label for="title">title: </label>
+              <input type="text" id="title" class="form-control" name="title" placeholder="Enter the title.." required ng-model="currentArticle.title"/>
+          </div>
+          <div class="form-element form-group">
+              <label for="time">time: </label>
+              <input type="date" id="time" class="form-control" name="time" placeholder="Enter the time.." required ng-model="currentArticle.time"/>
+          </div> 
+          <div class="form-element form-group">
+              <label for="details">details: </label>
+              <textarea id="details" class="form-control" name="details" placeholder="Enter the details.." rows="5" cols="50" required ng-model="currentArticle.details"></textarea>
+          </div>
+          <div class="form-element form-group">
+              <button type="submit" class="btn btn-primary" ng-click="saveCurrent()">Save</button>
+              <button type="submit" class="btn btn-primary" ng-click="cancelCurrent()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="/dpd.js"></script>
+  <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.4.4/jquery.jgrowl.min.js"></script>
+  <script src="/angular.min.js"></script>
+  <script src="static/script.js"></script>
+  <script src="dataService.js"></script>
+  <script src="static/articles.js"></script>
+  <script src="static/articleService.js"></script>
+  <script src="static/angular-animate.min.js"></script>
+</body>

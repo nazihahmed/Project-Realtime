@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Area</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/style.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.4.4/jquery.jgrowl.min.css">
+  <link rel="stylesheet" type="text/css" href="static/ng-img-crop.css">
+</head>
+<body>
+  <nav class="navbar navbar-default">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/adminArea">School Project</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-left">
+        <li><a href="/articles">Articles</a></li>
+        <li class="active"><a href="/slider">Slider</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Options <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/adminAccount">Account Settings</a></li>
+            <li role="separator" class="divider"></li>
+            <li id="logout"><a href="#">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </nav>
+  <div class="container" ng-app="slider">
+    <div class="row">
+      <div class="jumbotron text-center col-md-8 col-md-offset-2">
+        <h1>Slider Management</h1>
+      </div>
+    </div>
+    <div ng-controller="mainCRTL">
+      <h2 class="text-center">Upload Files</h2>
+      <div class="well">
+        <h4>Upload some files <small>(size Max. 1920x1080)</small></h4>
+        <p class="lead">
+          <form role="form">
+              <div class="row">
+                  <div class="form-group col-xs-10">
+                      <label for="comments">Slide Caption (optional)</label>
+                      <input type="text" class="form-control" id="comments" placeholder="Enter Caption">
+                  </div>
+                  <div class="checkbox  col-xs-2">
+                    <label>
+                      <input type="checkbox" id="uniqueFilename"> Unique Filename
+                    </label>
+                  </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-xs-12">
+                    <label for="exampleInputFile">File input</label>
+                    <input type="file" id="exampleInputFile" onchange="setFiles(this)" multiple>
+                </div>
+              </div>
+              <button type="button" class="btn btn-normal" onClick="uploadFiles()">Submit</button>
+          </form>
+        </p>
+      </div>
+      <h2 class="text-center">Files Table</h2>
+      <div class="row">
+        <div class="row marketing">
+            <table class="table table-condensed table-striped" id="result">
+                <tr>
+                    <th>Filename</th>
+                    <th>Sub Directory</th>
+                    <th>Comments</th>
+                    <th>Size</th>
+                    <th>Original Filename</th>
+                    <th>Creation Date</th>
+                    <th>Actions</th>
+                </tr>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/dpd.js"></script>
+  <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.4.4/jquery.jgrowl.min.js"></script>
+  <script src="/angular.min.js"></script>
+  <script src="static/script.js"></script>
+  <script src="static/mediaProvider.js"></script>
+  <script src="static/ng-img-crop.js"></script>
+  <script src="static/upload.js"></script>
+  <script src="static/slider.js"></script>
+  <script src="static/angular-animate.min.js"></script>
+</body>

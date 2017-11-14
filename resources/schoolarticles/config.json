@@ -1,0 +1,29 @@
+{
+	"type": "Collection",
+	"properties": {
+		"title": {
+			"name": "title",
+			"type": "string",
+			"typeLabel": "string",
+			"required": true,
+			"id": "title",
+			"order": 0
+		},
+		"time": {
+			"name": "time",
+			"type": "string",
+			"typeLabel": "string",
+			"required": true,
+			"id": "time",
+			"order": 1
+		},
+		"details": {
+			"name": "details",
+			"type": "string",
+			"typeLabel": "string",
+			"required": true,
+			"id": "details",
+			"order": 2
+		}
+	}
+}

@@ -1,0 +1,159 @@
+#marqueecontainer {
+  position: relative;
+  /*marquee width */
+  height: 800px;
+  /*marquee height */
+  background-color: white;
+  background-color:transparent;
+  overflow: hidden;
+  border: 1px solid black;
+  padding: 5px;
+}
+
+#vmarquee article {
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  overflow: hidden;
+}
+
+.main-row {
+  margin-bottom: 30px;
+}
+
+/* smoothDivScroll
+-------------------------------------------------- */
+/* The scroll wrapper is always the same width and height as the containing element (div).
+   Overflow is hidden because you don't want to show all of the scrollable area.
+*/
+div.scrollWrapper
+{
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+div.scrollableArea
+{
+  position: relative;
+  width: auto;
+  height: 100%;
+}
+
+#makeMeScrollable
+    {
+      width:100%;
+      height: 330px;
+      position: relative;
+    }
+    
+    #makeMeScrollable div.scrollableArea img
+    {
+      position: relative;
+      float: left;
+      margin: 0;
+      padding: 0;
+      /* If you don't want the images in the scroller to be selectable, try the following
+         block of code. It's just a nice feature that prevent the images from
+         accidentally becoming selected/inverted when the user interacts with the scroller. */
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -o-user-select: none;
+      user-select: none;
+    }
+.scrollWrapper {
+  overflow: hidden;
+}
+#scrollingText {
+    height: 70px;
+    position: relative;
+    /*border: solid 1px #ccc;*/
+    /*padding-top: 20px;*/
+}
+#scrollingText div.scrollableArea p
+{
+  display: block;
+  float: left;
+  margin: 0;
+  padding: 0px 0px 20px 20px;
+  font-family: Times, 'Times New Roman', Georgia, Serif; 
+  font-size:2em; 
+  font-weight: bold; 
+  background-color: #fff; 
+  color: #000; 
+  white-space: nowrap;
+}
+.sign {
+  font-size: 25px;
+}
+
+.main-clock h2 {
+  padding-right: 1em;
+}
+
+.credits {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  margin-top: 1.5em;
+}
+
+.weather {
+  border: 1px solid black;
+  padding: 35px 0 0;
+  width: 101%;
+}
+
+.slider {
+  border: 1px solid black;
+  padding: 1em 0;
+  width: 101%;
+  margin-bottom: 1em;
+  overflow: hidden;
+}
+
+.flexslider {
+  max-height: 500px;
+}
+
+.article--details {
+  font-size: 1.5em;
+}
+
+.flex-caption {
+  width: 100%;
+  padding: 2%;
+  left: 0;
+  bottom: 0;
+  background: rgba(0,0,0,.5);
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0,0,0,.3);
+  font-size: 14px;
+  line-height: 18px;
+}
