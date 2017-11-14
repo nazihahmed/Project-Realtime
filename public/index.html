@@ -99,19 +99,19 @@
                 </div>
                 <div class="row weather" ng-controller="weatherCTRL" ng-cloak>
                     <div class="col-xs-2 text-center" ng-repeat="day in weather.forecast | limitTo:6">
-                        <strong ng-if="$first" dir="rtl">
+                        <strong ng-if="$first" dir="ltr">
                             {{day.day | day}}<br>
                             {{day.text}}<br>
-                            درجة الحراره: {{ (+day.high + +day.low)/2}}°<br>
-                            مرتفع: {{day.high}}
-                            منخفض: {{day.low}}
+                            Temp: {{ (+day.high + +day.low)/2}}°<br>
+                            High: {{day.high}}
+                            Low: {{day.low}}
                         </strong>
-                        <div ng-if="!$first" dir="rtl">
+                        <div ng-if="!$first" dir="ltr">
                             {{day.day | day}}<br>
                             {{day.text}}<br>
-                            درجة الحراره: {{ (+day.high + +day.low)/2}}°<br>
-                            مرتفع: {{day.high}}
-                            منخفض: {{day.low}}
+                            Temp: {{ (+day.high + +day.low)/2}}°<br>
+                            High: {{day.high}}
+                            Low: {{day.low}}
                         </div>
                         <img ng-src="{{day.image}}" alt="current temparutre"/>
                     </div>
@@ -141,7 +141,7 @@
                     $(el).html(seperator + $(el).html() + seperator);
                 } else {
                     $(el).html($(el).html() + seperator);
-                } 
+                }
             });
 
           function animate() {
