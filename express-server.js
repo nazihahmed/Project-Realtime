@@ -1,4 +1,4 @@
-var PORT = process.env.PORT || 2403;
+var PORT = process.env.PORT || 3000;
 var ENV = process.env.NODE_ENV || 'development'; // change to production
 
 // setup http + express + socket.io
@@ -40,7 +40,7 @@ function queryLogin(query,fn) {
           fn(false);
         }
       } catch (e) {
-        
+
       }
 
     });
