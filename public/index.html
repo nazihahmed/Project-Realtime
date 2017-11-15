@@ -7,47 +7,6 @@
     <link rel="stylesheet" type="text/css" href="angular-csp.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.6.1/flexslider.min.css">
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript">
-
-    google.load("feeds", "1");
-
-    var event; // The custom event that will be created
-
-      if (document.createEvent) {
-        event = document.createEvent("HTMLEvents");
-        event.initEvent("dataavailable", true, true);
-      } else {
-        event = document.createEventObject();
-        event.eventType = "dataavailable";
-      }
-
-      event.eventName = "dataavailable";
-      var el = 'scrollingText';
-
-    function initialize() {
-      var feed = new google.feeds.Feed("http://www.alarab.com/feed.php");
-      feed.load(function(result) {
-
-        if (!result.error) {
-          var container = document.getElementsByClassName(el)[0];
-          for (var i = 0; i < result.feed.entries.length; i++) {
-            var entry = result.feed.entries[i];
-            var p = document.createElement("p");
-            p.appendChild(document.createTextNode(entry.title));
-            container.appendChild(p);
-          }
-        }
-        if (document.createEvent) {
-            window.dispatchEvent(event);
-          } else {
-            window.fireEvent("on" + event.eventType, event);
-          }
-      });
-    }
-    google.setOnLoadCallback(initialize);
-
-    </script>
 </head>
 <body>
 
@@ -119,18 +78,6 @@
             </div>
         </div>
     </div>
-
-    <footer class="footer animated slideInUp">
-      <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-1 hidden-xs hidden-sm">
-                <img class="img-responsive" alt="Alarab Logo" src="http://images.alarab.com/news/logo-142x73n.gif">
-            </div>
-            <div id="scrollingText" class="col-md-11 col-xs-12 scrollingText">
-            </div>
-          </div>
-      </div>
-    </footer>
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript">
         window.addEventListener("dataavailable", function(e) {
