@@ -119,22 +119,22 @@
         getSlides();
     });
 
-    // var days = {
-    //     'Sun':'الاحد',
-    //     'Mon':'الاثنين',
-    //     'Tue': 'الثلاثاء',
-    //     'Wed':'الاربعاء',
-    //     'Thu':'الخميس',
-    //     'Fri':'الجمعه',
-    //     'Sat': 'السبت'
-    // }
+    var days = {
+        'Sun': 'Sunday',
+        'Mon': 'Monday',
+        'Tue': 'Tuesday',
+        'Wed': 'Wednesday',
+        'Thu': 'Thursday',
+        'Fri': 'Friday',
+        'Sat': 'Saturday'
+    }
 
-    // app.filter('day', function() {
-    //     return function(input) {
-    //         console.log(input);
-    //         return days[input];
-    //     };
-    // });
+    app.filter('day', function() {
+        return function(input) {
+            console.log(input);
+            return days[input];
+        };
+    });
 
     $(function() {
         window.addEventListener("dataavailable", function(e) {
