@@ -81,7 +81,7 @@
                 success: function(weather) {
                     $scope.weather = weather;
                     $scope.$apply();
-                    $window.on("sliderInitialized", function(){ 
+                    $window.on("sliderInitialized", function(){
                         $timeout(function() {
                             console.log("slider initialized");
                             var height = parseInt($('#marqueecontainer').outerHeight());
@@ -115,34 +115,34 @@
                 }
             });
         }
-        
+
         getSlides();
     });
 
-    var days = {
-        'Sun':'الاحد',
-        'Mon':'الاثنين',
-        'Tue': 'الثلاثاء',
-        'Wed':'الاربعاء',
-        'Thu':'الخميس',
-        'Fri':'الجمعه',
-        'Sat': 'السبت'
-    } 
+    // var days = {
+    //     'Sun':'الاحد',
+    //     'Mon':'الاثنين',
+    //     'Tue': 'الثلاثاء',
+    //     'Wed':'الاربعاء',
+    //     'Thu':'الخميس',
+    //     'Fri':'الجمعه',
+    //     'Sat': 'السبت'
+    // }
 
-    app.filter('day', function() {
-        return function(input) {
-            console.log(input);
-            return days[input];
-        };
-    });
+    // app.filter('day', function() {
+    //     return function(input) {
+    //         console.log(input);
+    //         return days[input];
+    //     };
+    // });
 
     $(function() {
         window.addEventListener("dataavailable", function(e) {
             $("#scrollingText").smoothDivScroll({
                 autoScrollingMode: "always",
                 autoScrollingDirection: "endlessLoopLeft",
-                autoScrollInterval: 10, 
-                autoScrollStep: 2 
+                autoScrollInterval: 10,
+                autoScrollStep: 2
             });
         });
 
@@ -150,8 +150,8 @@
 
         window.initializeSlider = function() {
             slider = $('.flexslider').fitVids().flexslider({
-                animationLoop: true, 
-                slideshow: true, 
+                animationLoop: true,
+                slideshow: true,
                 slideshowSpeed: 4000,
                 animationSpeed: 600,
                 randomize: true,
@@ -200,9 +200,9 @@
             console.log(' remove a slide');
             removeSlide($('img'+id));
         });
-        
+
     });
-    
+
 
 })(jQuery,io,this);
 
