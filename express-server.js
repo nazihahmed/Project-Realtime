@@ -32,12 +32,17 @@ function queryLogin(query,fn) {
       if(err) {
         console.log('something is wrong');
       }
-      if(res.length>0) {
-        console.log('we are in : ',res[0].addresses);
-        fn(true,res[0]);
-      } else {
-        fn(false);
+      try {
+        if(res.length>0) {
+          console.log('we are in : ',res[0].addresses);
+          fn(true,res[0]);
+        } else {
+          fn(false);
+        }
+      } catch (e) {
+        
       }
+
     });
   },0);
 }
@@ -91,7 +96,7 @@ function logout(id,addr) {
         if(addr == '::1' || addr == '::ffff:127.0.0.1') {
           if (addresses.indexOf('::1') != -1) {
             addresses.splice(addresses.indexOf('::1'),1);
-          } 
+          }
           if (addresses.indexOf('::ffff:127.0.0.1') != -1) {
            addresses.splice(addresses.indexOf('::ffff:127.0.0.1'),1);
           }
