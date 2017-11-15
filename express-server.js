@@ -1,4 +1,4 @@
-var PORT = 2403;
+var PORT = 3000;
 var ENV = process.env.NODE_ENV || 'development'; // change to production
 
 // setup http + express + socket.io
